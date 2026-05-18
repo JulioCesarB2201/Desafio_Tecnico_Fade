@@ -1,2 +1,2 @@
-# Desafio-T-cnico---Fade
+# Desafio Técnico-Fade
 Processo seletivo Fade-UFPE
