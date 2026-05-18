@@ -3,6 +3,10 @@ from flask_cors import CORS
 
 from app.config.settings import Config
 from app.database.db import db
+from app.models.lesson_plan import LessonPlan
+from app.routes.lesson_plan_routes import (
+    lesson_plan_bp
+)
 
 def create_app():
 
@@ -13,6 +17,11 @@ def create_app():
     CORS(app)
 
     db.init_app(app)
+    
+    with app.app_context():
+        db.create_all()
+
+    app.register_blueprint(lesson_plan_bp)
 
     @app.route("/health")
     def health():
