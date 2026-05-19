@@ -1,6 +1,7 @@
 from flask import Blueprint
 from flask import jsonify
 from flask import request
+from flasgger import swag_from
 
 from app.services.lesson_plan_service import (
     LessonPlanService
@@ -11,6 +12,58 @@ lesson_plan_bp = Blueprint(
     __name__
 )
 
+@swag_from({
+    "tags": ["Lesson Plans"],
+    "parameters": [
+        {
+            "name": "body",
+            "in": "body",
+            "required": True,
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "example": "OSPF Básico"
+                    },
+                    "objective": {
+                        "type": "string",
+                        "example": "Aprender OSPF"
+                    },
+                    "summary": {
+                        "type": "string",
+                        "example": "Introdução ao protocolo"
+                    },
+                    "planned_date": {
+                        "type": "string",
+                        "example": "2026-05-20"
+                    },
+                    "discipline": {
+                        "type": "string",
+                        "example": "Redes"
+                    },
+                    "contents": {
+                        "type": "string",
+                        "example": "OSPF, LSAs"
+                    },
+                    "support_resources": {
+                        "type": "string",
+                        "example": "Packet Tracer"
+                    },
+                    "tags": {
+                        "type": "string",
+                        "example": "redes,ospf"
+                    }
+                }
+            }
+        }
+    ],
+    "responses": {
+        201: {
+            "description": "Lesson plan created successfully"
+        }
+    }
+})
 
 @lesson_plan_bp.route(
     "/plans",
@@ -40,6 +93,49 @@ def create_plan():
             "error": str(e)
         }), 500
 
+
+@swag_from({
+    "tags": ["Lesson Plans"],
+    "parameters": [
+        {
+            "name": "page",
+            "in": "query",
+            "type": "integer",
+            "required": False,
+            "default": 1
+        },
+        {
+            "name": "per_page",
+            "in": "query",
+            "type": "integer",
+            "required": False,
+            "default": 10
+        },
+        {
+            "name": "discipline",
+            "in": "query",
+            "type": "string",
+            "required": False
+        },
+        {
+            "name": "title",
+            "in": "query",
+            "type": "string",
+            "required": False
+        },
+        {
+            "name": "sort",
+            "in": "query",
+            "type": "string",
+            "required": False
+        }
+    ],
+    "responses": {
+        200: {
+            "description": "List of lesson plans"
+        }
+    }
+})
 
 @lesson_plan_bp.route(
     "/plans",
@@ -88,6 +184,26 @@ def get_all_plans():
         "pages": pagination.pages,
         "current_page": pagination.page
     })
+
+@swag_from({
+    "tags": ["Lesson Plans"],
+    "parameters": [
+        {
+            "name": "plan_id",
+            "in": "path",
+            "type": "integer",
+            "required": True
+        }
+    ],
+    "responses": {
+        200: {
+            "description": "Lesson plan found"
+        },
+        404: {
+            "description": "Lesson plan not found"
+        }
+    }
+})
     
 @lesson_plan_bp.route(
     "/plans/<int:plan_id>",
@@ -109,6 +225,40 @@ def get_plan_by_id(plan_id):
     return jsonify(
         lesson_plan.to_dict()
     )
+
+@swag_from({
+    "tags": ["Lesson Plans"],
+    "parameters": [
+        {
+            "name": "plan_id",
+            "in": "path",
+            "type": "integer",
+            "required": True
+        },
+        {
+            "name": "body",
+            "in": "body",
+            "required": True,
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "example": "Plano Atualizado"
+                    }
+                }
+            }
+        }
+    ],
+    "responses": {
+        200: {
+            "description": "Lesson plan updated successfully"
+        },
+        404: {
+            "description": "Lesson plan not found"
+        }
+    }
+})
     
 @lesson_plan_bp.route(
     "/plans/<int:plan_id>",
@@ -131,6 +281,26 @@ def update_plan(plan_id):
     return jsonify(
         updated_plan.to_dict()
     )
+
+@swag_from({
+    "tags": ["Lesson Plans"],
+    "parameters": [
+        {
+            "name": "plan_id",
+            "in": "path",
+            "type": "integer",
+            "required": True
+        }
+    ],
+    "responses": {
+        200: {
+            "description": "Lesson plan deleted successfully"
+        },
+        404: {
+            "description": "Lesson plan not found"
+        }
+    }
+})
     
 @lesson_plan_bp.route(
     "/plans/<int:plan_id>",
