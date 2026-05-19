@@ -1,9 +1,7 @@
 from app import create_app
 
 
-def test_create_lesson_plan():
-    app = create_app()
-    client = app.test_client()
+def test_create_lesson_plan(client):
 
     payload = {
         "title": "OSPF Básico",

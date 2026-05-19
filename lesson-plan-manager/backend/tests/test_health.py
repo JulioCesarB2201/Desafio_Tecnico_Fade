@@ -1,10 +1,8 @@
 from app import create_app
 
 
-def test_health_check():
+def test_health_check(client):
 
-    app = create_app()
-    client = app.test_client()
     response = client.get("/health")
 
     assert response.status_code == 200

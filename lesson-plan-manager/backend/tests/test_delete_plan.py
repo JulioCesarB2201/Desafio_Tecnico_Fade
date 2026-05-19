@@ -1,10 +1,7 @@
 from app import create_app
 
 
-def test_delete_plan():
-    
-    app = create_app()
-    client = app.test_client()
+def test_delete_plan(client):
 
     payload = {
         "title": "Plano Temporário",

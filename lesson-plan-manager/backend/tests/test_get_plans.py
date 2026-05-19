@@ -1,10 +1,8 @@
 from app import create_app
 
 
-def test_get_all_plans():
+def test_get_all_plans(client):
 
-    app = create_app()
-    client = app.test_client()
     response = client.get("/plans")
 
     assert response.status_code == 200
