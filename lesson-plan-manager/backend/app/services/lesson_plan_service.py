@@ -1,3 +1,4 @@
+from datetime import datetime
 from app.repositories.lesson_plan_repository import (
     LessonPlanRepository
 )
@@ -6,6 +7,12 @@ class LessonPlanService:
 
     @staticmethod
     def create(data):
+
+        data["planned_date"] = datetime.strptime(
+            data["planned_date"],
+            "%Y-%m-%d"
+        ).date()
+
         return LessonPlanRepository.create(data)
 
     @staticmethod
