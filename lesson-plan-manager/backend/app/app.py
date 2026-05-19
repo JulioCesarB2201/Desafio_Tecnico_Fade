@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
+from flasgger import Swagger
 
 from app.config.settings import Config
 from app.database.db import db
@@ -16,6 +17,8 @@ def create_app():
 
     CORS(app)
 
+    Swagger(app)
+    
     db.init_app(app)
     
     with app.app_context():
@@ -23,6 +26,13 @@ def create_app():
 
     app.register_blueprint(lesson_plan_bp)
 
+    @app.route("/")
+    def home():
+
+        return {
+            "message": "API is running"
+        }
+        
     @app.route("/health")
     def health():
         return {
