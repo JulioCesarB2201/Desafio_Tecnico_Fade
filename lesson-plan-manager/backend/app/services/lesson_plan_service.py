@@ -4,10 +4,37 @@ from app.repositories.lesson_plan_repository import (
 )
 
 class LessonPlanService:
+    REQUIRED_FIELDS = [
+        "title",
+        "objective",
+        "summary",
+        "planned_date",
+        "discipline",
+        "contents"
+    ]
 
+    @staticmethod
+    def validate(data):
+
+        missing_fields = []
+
+        for field in LessonPlanService.REQUIRED_FIELDS:
+
+            if field not in data or not data[field]:
+
+                missing_fields.append(field)
+
+        if missing_fields:
+
+            raise ValueError(
+                f"Missing required fields: {missing_fields}"
+            )
+            
     @staticmethod
     def create(data):
 
+        LessonPlanService.validate(data)
+        
         data["planned_date"] = datetime.strptime(
             data["planned_date"],
             "%Y-%m-%d"
@@ -16,8 +43,12 @@ class LessonPlanService:
         return LessonPlanRepository.create(data)
 
     @staticmethod
-    def get_all():
-        return LessonPlanRepository.get_all()
+    def get_all(page, per_page):
+
+        return LessonPlanRepository.get_all(
+            page,
+            per_page
+        )
 
     @staticmethod
     def get_by_id(plan_id):

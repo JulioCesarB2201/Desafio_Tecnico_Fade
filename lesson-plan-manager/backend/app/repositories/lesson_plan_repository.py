@@ -13,8 +13,15 @@ class LessonPlanRepository:
         return lesson_plan
 
     @staticmethod
-    def get_all():
-        return LessonPlan.query.all()
+    def get_all(page=1, per_page=10):
+
+        pagination = LessonPlan.query.paginate(
+            page=page,
+            per_page=per_page,
+            error_out=False
+        )
+
+        return pagination
 
     @staticmethod
     def get_by_id(plan_id):

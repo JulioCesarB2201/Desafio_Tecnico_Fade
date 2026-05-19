@@ -29,6 +29,12 @@ def create_plan():
             lesson_plan.to_dict()
         ), 201
 
+    except ValueError as e:
+
+        return jsonify({
+            "error": str(e)
+        }), 400
+        
     except Exception as e:
         return jsonify({
             "error": str(e)
@@ -39,15 +45,34 @@ def create_plan():
     "/plans",
     methods=["GET"]
 )
-
 def get_all_plans():
 
-    lesson_plans = LessonPlanService.get_all()
+    page = request.args.get(
+        "page",
+        default=1,
+        type=int
+    )
 
-    return jsonify([
-        plan.to_dict()
-        for plan in lesson_plans
-    ])
+    per_page = request.args.get(
+        "per_page",
+        default=10,
+        type=int
+    )
+
+    pagination = LessonPlanService.get_all(
+        page,
+        per_page
+    )
+
+    return jsonify({
+        "items": [
+            plan.to_dict()
+            for plan in pagination.items
+        ],
+        "total": pagination.total,
+        "pages": pagination.pages,
+        "current_page": pagination.page
+    })
     
 @lesson_plan_bp.route(
     "/plans/<int:plan_id>",
