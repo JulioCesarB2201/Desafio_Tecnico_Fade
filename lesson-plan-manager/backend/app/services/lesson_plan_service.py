@@ -43,11 +43,18 @@ class LessonPlanService:
         return LessonPlanRepository.create(data)
 
     @staticmethod
-    def get_all(page, per_page):
+    def get_all(
+        page,
+        per_page,
+        discipline=None,
+        title=None
+    ):
 
         return LessonPlanRepository.get_all(
             page,
-            per_page
+            per_page,
+            discipline,
+            title
         )
 
     @staticmethod

@@ -59,9 +59,19 @@ def get_all_plans():
         type=int
     )
 
+    discipline = request.args.get(
+        "discipline"
+    )
+
+    title = request.args.get(
+        "title"
+    )
+
     pagination = LessonPlanService.get_all(
         page,
-        per_page
+        per_page,
+        discipline,
+        title
     )
 
     return jsonify({

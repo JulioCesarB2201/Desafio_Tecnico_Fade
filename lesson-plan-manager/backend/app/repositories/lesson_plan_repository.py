@@ -13,9 +13,32 @@ class LessonPlanRepository:
         return lesson_plan
 
     @staticmethod
-    def get_all(page=1, per_page=10):
+    def get_all(
+        page=1,
+        per_page=10,
+        discipline=None,
+        title=None
+    ):
 
-        pagination = LessonPlan.query.paginate(
+        query = LessonPlan.query
+
+        if discipline:
+
+            query = query.filter(
+                LessonPlan.discipline.ilike(
+                    f"%{discipline}%"
+                )
+            )
+
+        if title:
+
+            query = query.filter(
+                LessonPlan.title.ilike(
+                    f"%{title}%"
+                )
+            )
+
+        pagination = query.paginate(
             page=page,
             per_page=per_page,
             error_out=False
