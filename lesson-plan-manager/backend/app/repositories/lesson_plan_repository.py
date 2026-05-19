@@ -66,7 +66,10 @@ class LessonPlanRepository:
 
     @staticmethod
     def get_by_id(plan_id):
-        return LessonPlan.query.get(plan_id)
+        return db.session.get(
+            LessonPlan,
+            plan_id
+        )
 
     @staticmethod
     def delete(lesson_plan):
