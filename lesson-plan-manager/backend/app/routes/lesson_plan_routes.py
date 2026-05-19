@@ -66,12 +66,17 @@ def get_all_plans():
     title = request.args.get(
         "title"
     )
+    
+    sort = request.args.get(
+        "sort"
+    )
 
     pagination = LessonPlanService.get_all(
         page,
         per_page,
         discipline,
-        title
+        title,
+        sort
     )
 
     return jsonify({

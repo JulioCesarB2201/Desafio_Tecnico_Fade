@@ -47,14 +47,16 @@ class LessonPlanService:
         page,
         per_page,
         discipline=None,
-        title=None
+        title=None,
+        sort=None
     ):
 
         return LessonPlanRepository.get_all(
             page,
             per_page,
             discipline,
-            title
+            title,
+            sort
         )
 
     @staticmethod

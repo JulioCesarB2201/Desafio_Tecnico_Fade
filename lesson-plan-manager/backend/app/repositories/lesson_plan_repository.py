@@ -17,7 +17,8 @@ class LessonPlanRepository:
         page=1,
         per_page=10,
         discipline=None,
-        title=None
+        title=None,
+        sort=None
     ):
 
         query = LessonPlan.query
@@ -37,6 +38,23 @@ class LessonPlanRepository:
                     f"%{title}%"
                 )
             )
+
+        if sort:
+
+            allowed_sorts = [
+                "planned_date",
+                "created_at",
+                "title"
+            ]
+
+            if sort in allowed_sorts:
+
+                query = query.order_by(
+                    getattr(
+                        LessonPlan,
+                        sort
+                    )
+                )
 
         pagination = query.paginate(
             page=page,
