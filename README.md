@@ -1,9 +1,6 @@
-# Desafio Técnico-Fade
-Processo seletivo Fade-UFPE
-
 # Lesson Plan Manager API
 
-API REST para gerenciamento de planos de aula com geração assistida por IA.
+API REST desenvolvida com Flask para gerenciamento de planos de aula, incluindo CRUD completo, integração com IA, testes automatizados, documentação Swagger e containerização com Docker.
 
 ---
 
@@ -11,11 +8,13 @@ API REST para gerenciamento de planos de aula com geração assistida por IA.
 
 - CRUD completo de planos de aula
 - Geração automática de planos com IA
-- Documentação Swagger
-- Suporte com Docker
+- Persistência com SQLite
+- Documentação interativa com Swagger
 - Testes automatizados com Pytest
-- Banco de dados SQLite
-- Arquitetura em camadas
+- Containerização com Docker
+- Arquitetura organizada em camadas
+- Tratamento básico de erros
+- Fallback mockado para IA
 
 ---
 
@@ -35,15 +34,28 @@ API REST para gerenciamento de planos de aula com geração assistida por IA.
 # Estrutura do Projeto
 
 ```txt
-app/
-├── ai/
-├── config/
-├── database/
-├── errors/
-├── models/
-├── repositories/
-├── routes/
-├── services/
+backend/
+│
+├── app/
+│   ├── ai/
+│   ├── config/
+│   ├── database/
+│   ├── errors/
+│   ├── models/
+│   ├── repositories/
+│   ├── routes/
+│   └── services/
+│
+├── tests/
+├── assets/
+│
+├── .env.example
+├── .gitignore
+├── docker-compose.yml
+├── Dockerfile
+├── README.md
+├── requirements.txt
+└── run.py
 ```
 
 ---
@@ -53,7 +65,7 @@ app/
 ## Clonar repositório
 
 ```bash
-git clone <url_repositorio>
+git clone <url_do_repositorio>
 cd lesson-plan-manager/backend
 ```
 
@@ -61,19 +73,17 @@ cd lesson-plan-manager/backend
 
 ## Criar ambiente virtual
 
-```bash
-python -m venv venv
-```
-
 ### Linux
 
 ```bash
+python -m venv venv
 source venv/bin/activate
 ```
 
 ### Windows
 
 ```bash
+python -m venv venv
 venv\Scripts\activate
 ```
 
@@ -89,13 +99,7 @@ pip install -r requirements.txt
 
 # Variáveis de Ambiente
 
-Crie um arquivo:
-
-```txt
-.env
-```
-
-Exemplo:
+Crie um arquivo `.env`:
 
 ```env
 DATABASE_URL=sqlite:///lesson_plans.db
@@ -104,13 +108,13 @@ OPENROUTER_API_KEY=sua_chave
 
 ---
 
-# Executando a Aplicação
+# Executando o Projeto
 
 ```bash
 python run.py
 ```
 
-API:
+A API ficará disponível em:
 
 ```txt
 http://127.0.0.1:5000
@@ -124,9 +128,11 @@ http://127.0.0.1:5000/apidocs
 
 ---
 
-# Docker
+# Containerização com Docker
 
-## Build da aplicação
+O projeto foi containerizado utilizando Docker e Docker Compose, permitindo execução padronizada do ambiente e facilitando desenvolvimento e deploy.
+
+## Build dos containers
 
 ```bash
 docker compose build
@@ -134,7 +140,7 @@ docker compose build
 
 ---
 
-## Executar containers
+## Executar aplicação
 
 ```bash
 docker compose up
@@ -142,7 +148,17 @@ docker compose up
 
 ---
 
-# Executando os Testes
+## Docker em execução
+
+![Docker](./assets/docker.png)
+
+---
+
+# Testes Automatizados
+
+Os testes automatizados foram desenvolvidos utilizando Pytest para validar os principais fluxos da aplicação.
+
+## Executar testes
 
 ```bash
 pytest
@@ -150,7 +166,13 @@ pytest
 
 ---
 
-# Principais Endpoints
+## Resultado dos testes
+
+![Tests](./assets/tests.png)
+
+---
+
+# Endpoints Principais
 
 ## Health Check
 
@@ -200,13 +222,13 @@ DELETE /plans/<id>
 
 ---
 
-## Gerar plano com IA
+## Gerar plano automaticamente com IA
 
 ```http
 POST /plans/generate
 ```
 
-Exemplo:
+### Exemplo
 
 ```json
 {
@@ -216,26 +238,52 @@ Exemplo:
 
 ---
 
-# Integração com IA
+# Demonstração
 
-A aplicação integra provedores externos de LLM através da OpenRouter API.
+## Swagger
 
-Também foi implementado um sistema de fallback mockado para garantir estabilidade durante desenvolvimento e testes, mesmo em casos de indisponibilidade da IA externa.
+A documentação da API foi desenvolvida utilizando Swagger.
+
+![Swagger](./assets/swagger.png)
+
+---
+
+## Integração com IA
+
+A aplicação possui integração com provedores LLM via OpenRouter API para geração automática de planos de aula.
+
+Também foi implementado um sistema de fallback mockado para funcionamento em casos de indisponibilidade da IA externa.
+
+![AI](./assets/ai.png)
+
+---
+
+## Estrutura do Projeto
+
+Organização baseada em arquitetura em camadas para separação de responsabilidades e melhor manutenção do sistema.
+
+![Structure](./assets/structure.png)
+
+---
+
+# Observações
+
+Devido a incompatibilidades relacionadas ao ambiente gráfico Linux/NVIDIA durante a gravação da demonstração em vídeo, a apresentação do funcionamento do sistema foi documentada através de screenshots reais da aplicação em execução.
 
 ---
 
 # Melhorias Futuras
 
 - Autenticação JWT
-- Paginação
+- PostgreSQL
 - Deploy em nuvem
-- Suporte PostgreSQL
-- Tasks assíncronas
+- Paginação
 - Cache
 - Rate limiting
+- Tasks assíncronas
 
 ---
 
 # Autor
 
-Julio Cesar Barbosa da Silva
+Júlio César Barbosa da Silva
