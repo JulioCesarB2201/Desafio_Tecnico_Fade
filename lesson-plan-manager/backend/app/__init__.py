@@ -8,6 +8,9 @@ from app.models.lesson_plan import LessonPlan
 from app.routes.lesson_plan_routes import (
     lesson_plan_bp
 )
+from app.errors.handlers import (
+    register_error_handlers
+)
 
 def create_app():
 
@@ -26,6 +29,8 @@ def create_app():
 
     app.register_blueprint(lesson_plan_bp)
 
+    register_error_handlers(app)
+    
     @app.route("/")
     def home():
 

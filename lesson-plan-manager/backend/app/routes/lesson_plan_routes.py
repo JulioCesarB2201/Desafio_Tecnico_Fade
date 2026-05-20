@@ -2,9 +2,17 @@ from flask import Blueprint
 from flask import jsonify
 from flask import request
 from flasgger import swag_from
+from app.database.db import db
+from datetime import datetime
+
+from app.models.lesson_plan import LessonPlan
 
 from app.services.lesson_plan_service import (
     LessonPlanService
+)
+
+from app.ai.llm_service import (
+    generate_lesson_plan
 )
 
 lesson_plan_bp = Blueprint(
@@ -320,3 +328,44 @@ def delete_plan(plan_id):
     return jsonify({
         "message": "Lesson plan deleted"
     })
+    
+@lesson_plan_bp.route(
+    "/plans/generate",
+    methods=["POST"]
+)
+def generate_plan():
+
+    data = request.get_json()
+
+    topic = data.get("topic")
+
+    if not topic:
+
+        return {
+            "error": "topic is required"
+        }, 400
+
+    generated_plan = generate_lesson_plan(
+        topic
+    )
+
+    new_plan = LessonPlan(
+    title=generated_plan["title"],
+    objective=generated_plan["objective"],
+    summary=generated_plan["summary"],
+    planned_date=datetime.strptime(
+    generated_plan["planned_date"],
+    "%Y-%m-%d"
+    ).date(),
+    discipline=generated_plan["discipline"],
+    contents=generated_plan["contents"],
+    support_resources=
+        generated_plan["support_resources"],
+    tags=generated_plan["tags"]
+    )
+
+    db.session.add(new_plan)
+
+    db.session.commit()
+
+    return new_plan.to_dict(), 201
