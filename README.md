@@ -150,7 +150,7 @@ docker compose up
 
 ## Docker em execução
 
-![Docker](./assets/docker.png)
+![Docker](lesson-plan-manager/assets/docker.png)
 
 ---
 
@@ -168,7 +168,7 @@ pytest
 
 ## Resultado dos testes
 
-![Tests](./assets/tests.png)
+![Tests](lesson-plan-manager/assets/tests.png)
 
 ---
 
@@ -244,7 +244,7 @@ POST /plans/generate
 
 A documentação da API foi desenvolvida utilizando Swagger.
 
-![Swagger](./assets/swagger.png)
+![Swagger](lesson-plan-manager/assets/swagger.png)
 
 ---
 
@@ -254,7 +254,7 @@ A aplicação possui integração com provedores LLM via OpenRouter API para ger
 
 Também foi implementado um sistema de fallback mockado para funcionamento em casos de indisponibilidade da IA externa.
 
-![AI](./assets/ai.png)
+![AI](lesson-plan-manager/assets/ai.png)
 
 ---
 
@@ -262,7 +262,7 @@ Também foi implementado um sistema de fallback mockado para funcionamento em ca
 
 Organização baseada em arquitetura em camadas para separação de responsabilidades e melhor manutenção do sistema.
 
-![Structure](./assets/structure.png)
+![Structure](lesson-plan-manager/assets/structure.png)
 
 ---
 
