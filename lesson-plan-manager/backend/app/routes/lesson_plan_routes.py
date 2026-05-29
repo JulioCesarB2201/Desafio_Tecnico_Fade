@@ -328,7 +328,35 @@ def delete_plan(plan_id):
     return jsonify({
         "message": "Lesson plan deleted"
     })
-    
+
+@swag_from({
+    "tags": ["Lesson Plans"],
+    "parameters": [
+        {
+            "name": "body",
+            "in": "body",
+            "required": True,
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "topic": {
+                        "type": "string",
+                        "example": "TCP/IP"
+                    }
+                }
+            }
+        }
+    ],
+    "responses": {
+        201: {
+            "description": "Lesson plan generated successfully"
+        },
+        400: {
+            "description": "Topic is required"
+        }
+    }
+})
+
 @lesson_plan_bp.route(
     "/plans/generate",
     methods=["POST"]
